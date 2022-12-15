@@ -26,7 +26,7 @@ public class Main {
         client.getOptions().setJavaScriptEnabled(false);
 
         int count = 0;
-        for (int i = 1; i < 5; ++i) {
+        for (int i = 1; i < 4; ++i) {
             HtmlPage page = client.getPage("https://bashesk.ru/corporate/tariffs/unregulated/?PAGEN_1="+ i +"&filter_name=&filter_date_from=01.07.2019&filter_date_to=01.06.2020");
 
             List<HtmlElement> items = page.getByXPath("//div[@class='col-2']");
@@ -36,7 +36,6 @@ public class Main {
                 String itemUrl = itemAnchor.getHrefAttribute();
 
                 if (itemUrl.contains("ПУНЦЭМ_до 670кВт")) {
-                    System.out.println(itemUrl);
                     try (InputStream in = new URL("https://bashesk.ru/" + itemUrl.replace(" ", "%20")).openStream()) {
                         Files.copy(in, Paths.get(count + ".xls"));
                         ++count;
@@ -47,7 +46,7 @@ public class Main {
     }
 
     static void parseFiles() throws IOException {
-        for (int i = 0; i < 13; ++i) {
+        for (int i = 0; i < 12; ++i) {
             HSSFWorkbook excelBook = new HSSFWorkbook(new FileInputStream(i + ".xls"));
             HSSFSheet bookSheet = excelBook.getSheetAt(0);
             boolean cellIsFound = false;
